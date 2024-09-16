@@ -10,25 +10,17 @@ namespace HelpStockApp.Domain.Entities
         public int Stock { get; set; }
         public string Image { get; set; }
 
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
 
         public Product(string name, string description, decimal price, int stock, string image)
         {
-            Name = name;
-            Description = description;
-            Price = price;
-            Stock = stock;
-            Image = image;
+            ValidateDomain(name, description, price, stock, image);
         }
+
         public Product(int id, string name, string description, decimal price, int stock, string image)
         {
+            DomainExceptionValidation.When(id < 0, "Invalid Id value.");
             Id = id;
-            Name = name;
-            Description = description;
-            Price = price;
-            Stock = stock;
-            Image = image;
+            ValidateDomain(name, description, price, stock, image);
         }
 
         private void ValidateDomain(string name, string description, decimal price, int stock, string image)
@@ -40,6 +32,15 @@ namespace HelpStockApp.Domain.Entities
             DomainExceptionValidation.When(string.IsNullOrEmpty(description), "Invalid description, description is required!");
             DomainExceptionValidation.When(stock < 0, "Invalid Stock, stock negative value is improbable!");
             DomainExceptionValidation.When(image.Length > 250, "Invalid image, too big. Minimum 250 characters!");
+
+            Name = name;
+            Description = description;
+            Price = price;
+            Stock = stock;
+            Image = image;
         }
+
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }

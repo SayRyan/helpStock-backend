@@ -14,6 +14,14 @@ namespace HelpStockApp.Domain.Test
             Action action= () => new Category(1, "Category name");
             action.Should().NotThrow<DomainExceptionValidation>();
         }
+
+        [Fact(DisplayName = "Create Category With Name Parameter Name Alone")]
+        public void CreateCategory_WithNameParemetersNameAlone_ResultException()
+        {
+            Action action = () => new Category("Alone");
+            action.Should().NotThrow<DomainExceptionValidation>();
+        }
+
         #endregion
 
         #region Testes Negativos de Categoria
@@ -25,13 +33,36 @@ namespace HelpStockApp.Domain.Test
             action.Should().Throw<DomainExceptionValidation>()
                 .WithMessage("Invalid Id Value.");
         }
+
+        [Fact(DisplayName = "Create Category With Name Too Short Parameter")]
+        public void CreateCategory_WithNameTooShortParemeters_ResultException()
+        {
+            Action action = () => new Category(1, "AB");
+            action.Should().Throw<DomainExceptionValidation>()
+                .WithMessage("Invalid name, too short. Minimum 3 characters!");   
+        }
+
+        [Fact(DisplayName = "Create Category With Name Null Parameter")]
+        public void CreateCategory_WithNameNullParemeters_ResultException()
+        {
+            Action action = () => new Category(1, null);
+            action.Should().Throw<DomainExceptionValidation>()
+                .WithMessage("Invalid name, name is required!");
+        }
+
         /*
-            Create Category With Name Too Short Parameter
-            Create Category With Name Null Parameter
-            Create Category With Name Missing Parameter
             Create Category With Name Invalid Id Caracter Id
             Create Category With Name Parameter Name Alone
          */
+
+        [Fact(DisplayName = "Create Category With Name Missing Parameter")]
+        public void CreateCategory_WithNameMissingParemeters_ResultException()
+        {
+            Action action = () => new Category(1, "");
+            action.Should().Throw<DomainExceptionValidation>()
+                .WithMessage("Invalid name, name is required!");
+        }
+
         #endregion
     }
 }

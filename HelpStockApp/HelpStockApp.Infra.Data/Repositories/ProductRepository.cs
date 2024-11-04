@@ -9,7 +9,7 @@ namespace HelpStockApp.Infra.Data.Repositories
     {
         private ApplicationDbContext _productContext;
 
-        public ProductRepository(ApplicationDbContext productContext)
+        public ProductRepository(ApplicationDbContext context)
         {
             _productContext = context;
         }

@@ -1,6 +1,7 @@
 ﻿using HelpStockApp.Application.DTOs;
 using HelpStockApp.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 
 namespace HelpStockApp.API.Controllers
 {
@@ -36,6 +37,38 @@ namespace HelpStockApp.API.Controllers
                 return NotFound("Product not found");
             }
             return Ok(product);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateProduct([FromBody] ProductDTO productDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _productService.Add(productDto);
+            return CreatedAtAction(nameof(Get), new { id = productDto.Id }, productDto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(int id, [FromBody] ProductDTO productDto)
+        {
+            if (id != productDto.Id)
+                return BadRequest("ID mismatch.");
+            if (!ModelState.IsValid)
+                return BadRequest("ID mismatch.");
+            await _productService.Update(productDto);
+            return Ok(productDto);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var product = await _productService.GetProductById(id);
+            if (product == null)
+                return NotFound();
+
+            await _productService.Remove(id);
+            return Ok();
         }
     }
 }

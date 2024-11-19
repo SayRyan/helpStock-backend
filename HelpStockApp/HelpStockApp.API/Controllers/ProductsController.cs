@@ -1,9 +1,11 @@
 ﻿using HelpStockApp.Application.DTOs;
 using HelpStockApp.Application.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelpStockApp.API.Controllers
 {
+    [EnableCors("AllowSpecificOrigins")]
     [Route("/api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

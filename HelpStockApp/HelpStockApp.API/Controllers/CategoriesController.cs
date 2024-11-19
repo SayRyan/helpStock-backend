@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HelpStockApp.Application.DTOs;
 using HelpStockApp.Application.Interfaces;
+using Microsoft.AspNetCore.Cors;
 
 namespace HelpStockApp.API.Controllers
 {
+    [EnableCors("AllowSpecificOrigins")]
     [Route("/api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
